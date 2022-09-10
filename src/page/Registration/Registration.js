@@ -1,8 +1,34 @@
 import React from "react";
 import './style.scss'
-import { Form, Button, Checkbox, DatePicker, Input, Select, Space } from "antd";
+import { Form, Button, Input } from "antd";
+import { axiosService } from "../../axios/axiosService";
+import { BASE_URL } from "../../service";
+import { useNavigate } from "react-router-dom";
 
-function Registration() {
+const Registration = () => {
+
+    const navigate = useNavigate();
+
+    const onFinish = async (values) => {
+        console.log("hello");
+
+        try {
+            const res = await axiosService(BASE_URL+'/auth/register', values, 'POST');
+            console.log('data', res.data);
+
+            if (res) {
+                console.log("success");
+                navigate('/login');
+            }
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    const onFinishFailed = (errorInfo) => {
+        console.log('Failed:', errorInfo);
+      };
+
     return (
       <div className="App">
         <div className="header">
@@ -24,15 +50,11 @@ function Registration() {
             autoComplete="off"
             labelCol={{ span: 10 }}
             wrapperCol={{ span: 14 }}
-            onFinish={(values) => {
-              console.log({ values });
-            }}
-            onFinishFailed={(error) => {
-              console.log({ error });
-            }}
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
           >
             <Form.Item
-              name="fullName"
+              name="name"
               label="Full Name"
               rules={[
                 {
@@ -67,14 +89,9 @@ function Registration() {
               rules={[
                 {
                   required: true,
+                  message: "Password is required",
                 },
                 { min: 8 },
-                {
-                  validator: (_, value) =>
-                    value && value.includes("A")
-                      ? Promise.resolve()
-                      : Promise.reject("Password does not match criteria."),
-                },
               ]}
               hasFeedback
             >
@@ -82,7 +99,7 @@ function Registration() {
             </Form.Item>
   
             <Form.Item
-              name="confirmPassword"
+              name="password_confirmation"
               label="Confirm Password"
               dependencies={["password"]}
               rules={[
@@ -106,7 +123,7 @@ function Registration() {
               <Input.Password placeholder="Confirm your password" />
             </Form.Item>
   
-            <Form.Item
+            {/* <Form.Item
               name="website"
               label="CV Link"
               rules={[
@@ -119,7 +136,7 @@ function Registration() {
               hasFeedback
             >
               <Input placeholder="Add your CV link" />
-            </Form.Item>
+            </Form.Item> */}
   
             <Form.Item wrapperCol={{ span: 24 }}>
               <Button block type="primary" htmlType="submit">
