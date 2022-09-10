@@ -11,11 +11,11 @@ const Login = () => {
 
     const navigate = useNavigate();
 
-    // useEffect(()=> {
-    //     if(localStorage.getItem('access_token')) {
-    //      navigate('/');
-    //     }
-    // }, [])
+    useEffect(()=> {
+        if(localStorage.getItem('access_token')) {
+         navigate('/dashboard');
+        }
+    }, [])
 
   const onFinish = async (values) => {
     console.log('Success:', values);
@@ -26,8 +26,7 @@ const Login = () => {
         
         if(res.data.access_token) {
             localStorage.setItem('access_token', res.data.access_token);
-            navigate('/');
-            
+            navigate('/dashboard');  
         } else {
                 throw Error('password or username incorrect');
             
