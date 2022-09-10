@@ -27,7 +27,11 @@ const Registration = () => {
 
     const onFinishFailed = (errorInfo) => {
         console.log('Failed:', errorInfo);
-      };
+    };
+
+    const signIn = () => {
+      navigate('/login');
+    }
 
     return (
       <div className="App">
@@ -37,7 +41,7 @@ const Registration = () => {
             </div>
             <div className="header-button">
                 <Button type="primary"
-                    // onClick={signout}
+                    onClick={() => signIn()}
                     className='header-button-login'
                     >
                         <span>Log in</span>
