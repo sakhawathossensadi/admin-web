@@ -1,9 +1,24 @@
 import React from "react";
+import './style.scss'
 import { Form, Button, Checkbox, DatePicker, Input, Select, Space } from "antd";
 
 function Registration() {
     return (
       <div className="App">
+        <div className="header">
+            <div className="header-title">
+                <h1 className="header-title-h1">Talent Hiring</h1>
+            </div>
+            <div className="header-button">
+                <Button type="primary"
+                    // onClick={signout}
+                    className='header-button-login'
+                    >
+                        <span>Log in</span>
+                </Button>
+            </div>
+        </div>
+        <div>
         <header className="App-header">
           <Form
             autoComplete="off"
@@ -25,7 +40,6 @@ function Registration() {
                   message: "Please enter your name",
                 },
                 { whitespace: true },
-                { min: 3 },
               ]}
               hasFeedback
             >
@@ -54,7 +68,7 @@ function Registration() {
                 {
                   required: true,
                 },
-                { min: 6 },
+                { min: 8 },
                 {
                   validator: (_, value) =>
                     value && value.includes("A")
@@ -74,6 +88,7 @@ function Registration() {
               rules={[
                 {
                   required: true,
+                  message: "Confirm password is required",
                 },
                 ({ getFieldValue }) => ({
                   validator(_, value) {
@@ -91,59 +106,19 @@ function Registration() {
               <Input.Password placeholder="Confirm your password" />
             </Form.Item>
   
-            <Form.Item name="gender" label="Gender" requiredMark="optional">
-              <Select placeholder="Select your gender">
-                <Select.Option value="male">Male</Select.Option>
-                <Select.Option value="female">Female</Select.Option>
-              </Select>
-            </Form.Item>
-  
-            <Form.Item
-              name="dob"
-              label="Date of Birth"
-              rules={[
-                {
-                  required: true,
-                  message: "Please provide your date of birth",
-                },
-              ]}
-              hasFeedback
-            >
-              <DatePicker
-                style={{ width: "100%" }}
-                picker="date"
-                placeholder="Chose date of birth"
-              />
-            </Form.Item>
-  
             <Form.Item
               name="website"
-              label="Website"
-              rules={[{ type: "url", message: "Please enter a valid url" }]}
-              hasFeedback
-            >
-              <Input placeholder="Add your website url" />
-            </Form.Item>
-  
-            <Form.Item
-              name="agreement"
-              wrapperCol={{ span: 24 }}
-              valuePropName="checked"
+              label="CV Link"
               rules={[
                 {
-                  validator: (_, value) =>
-                    value
-                      ? Promise.resolve()
-                      : Promise.reject(
-                          "To proceed, you need to agree with our terms and conditions"
-                        ),
+                    required: true,
+                    message: "CV link is required",
                 },
-              ]}
+                { type: "url", message: "Please enter a valid url" }
+            ]}
+              hasFeedback
             >
-              <Checkbox>
-                {" "}
-                Agree to our <a href="#">Terms and Conditions</a>
-              </Checkbox>
+              <Input placeholder="Add your CV link" />
             </Form.Item>
   
             <Form.Item wrapperCol={{ span: 24 }}>
@@ -153,6 +128,7 @@ function Registration() {
             </Form.Item>
           </Form>
         </header>
+        </div>
       </div>
     );
   }
