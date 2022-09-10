@@ -1,4 +1,5 @@
 import React from "react";
+import { useEffect } from "react";
 import './style.scss'
 import { Form, Button, Input } from "antd";
 import { axiosService } from "../../axios/axiosService";
@@ -8,6 +9,14 @@ import { useNavigate } from "react-router-dom";
 const Registration = () => {
 
     const navigate = useNavigate();
+
+    useEffect(()=> {
+      if(localStorage.getItem('access_token')) {
+       navigate('/dashboard');
+      } else {
+        navigate('/');
+      }
+  }, [])
 
     const onFinish = async (values) => {
         console.log("hello");
