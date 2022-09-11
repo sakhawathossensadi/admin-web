@@ -57,6 +57,22 @@ function Dashboard () {
         console.log('status',status);
     }
 
+    const showAcceptModal = () => {
+        setAcceptModalVisible(true);
+    }
+
+    const showPendingModal = () => {
+        setRejectModalVisible(true);
+    }
+
+    const handleAcceptModalCancel = () => {
+        setAcceptModalVisible(false);
+    }
+
+    const handleRejectModalCancel = () => {
+        setRejectModalVisible(false);
+    }
+
     const acceptModalFooter = (
         <div style={{ display: 'flex', justifyContent: 'center'}}>
             <Button type='primary' size='large' onClick={handleVideoActive}>
@@ -143,7 +159,7 @@ function Dashboard () {
                                     </div>
                                     <Modal title="Approve Candidate" visible={acceptModalVisible} footer={acceptModalFooter} maskStyle={{ opacity: '0.3' }} onCancel={handleAcceptModalCancel}>
                                     </Modal>
-                                    <Modal title="Reject Candidate" visible={pendingModalVisible} footer={rejectModalFooter} onCancel={handlePendingModalCancel}>
+                                    <Modal title="Reject Candidate" visible={rejectModalVisible} footer={rejectModalFooter} onCancel={handleRejectModalCancel}>
                                     </Modal>
                                     <div className="candidate-list-body-item-button">
                                         <Button  className="action-btn">
