@@ -6,13 +6,17 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { axiosService } from "../../axios/axiosService";
 import { BASE_URL } from "../../service";
-import { SERVER_TALENT_ADMIN_CANDIDATES_ENDPOINT, SERVER_TALENT_ADMIN_CANDIDATE_STATUS_UPDATE_ENDPOINT } from '../../config/endpoints';
+import { 
+    SERVER_TALENT_ADMIN_CANDIDATES_ENDPOINT, 
+    SERVER_TALENT_ADMIN_CANDIDATE_STATUS_UPDATE_ENDPOINT, 
+    SERVER_TALENT_ADMIN_PROFILE_ENDPOINT } from '../../config/endpoints';
 import styles from '../Dashboard/Contents.module.scss';
 
 function Dashboard () {
 
     const navigate = useNavigate();
 
+    const [adminName, setAdminName] = useState('');
     const [candidates, setCandidates] = useState([]);
     const [page, setPage] = useState(1);
     const [total, setTotal] = useState(0);
@@ -28,11 +32,26 @@ function Dashboard () {
         page: page
     };
 
+    const dummy = {};
+
     useEffect(() => {
         if(!localStorage.getItem('access_token')) {
             navigate('/');
            }
     })
+
+    useEffect(() => {
+        fetchAdmin();
+    },[]);
+
+    const fetchAdmin = async () => {
+        try {
+            const res = await axiosService(BASE_URL+SERVER_TALENT_ADMIN_PROFILE_ENDPOINT, dummy, 'GET');
+            setAdminName(res.data.name);
+        } catch (e) {
+            console.log(e)
+        }
+    }
 
     useEffect(() => {
         fetchCandidates();
@@ -155,7 +174,7 @@ function Dashboard () {
                     <div className="dashboard-topbar-profile-style">
                         <div className='dashboard-topbar-profile-style-name'>
                             <span className='dashboard-topbar-profile-style-name-span'>
-                                Hello, {"userName"}
+                                Hello, {adminName}
                             </span>
                             <Avatar size={42}  icon={<UserOutlined />} />
                         </div>
