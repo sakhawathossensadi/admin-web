@@ -20,7 +20,7 @@ function Dashboard () {
     const [candidatePreviousStatus, setCandidatePreviousStatus] = useState(0);
     const [candidateStatus, setCandidateStatus] = useState(0);
     const [candidateId, setCandidateId] = useState(0);
-    const [acceptModalVisible, setAcceptModalVisible] = useState(false);
+    const [acceptModalVisible, setApproveModalVisible] = useState(false);
     const [rejectModalVisible, setRejectModalVisible] = useState(false);
     const [candidateLoader, setCandidateLoader] = useState(false);
 
@@ -64,25 +64,25 @@ function Dashboard () {
         setCandidateId(candidateId);
 
         if (status === "approve") {
-            showAcceptModal();
+            showApproveModal();
             setCandidateStatus(1);
         }
         if (status === "reject") {
             showRejectModal();
-            setCandidateStatus(1);
+            setCandidateStatus(0);
         }
     }
 
-    const showAcceptModal = () => {
-        setAcceptModalVisible(true);
+    const showApproveModal = () => {
+        setApproveModalVisible(true);
     }
 
     const showRejectModal = () => {
         setRejectModalVisible(true);
     }
 
-    const handleAcceptModalCancel = () => {
-        setAcceptModalVisible(false);
+    const handleApproveModalCancel = () => {
+        setApproveModalVisible(false);
     }
 
     const handleRejectModalCancel = () => {
@@ -105,6 +105,28 @@ function Dashboard () {
         } catch (e) {
             console.log(e)
         }
+
+        setApproveModalVisible(false);
+    }
+
+    const handleCandidateReject = async () => {
+        let url = SERVER_TALENT_ADMIN_CANDIDATE_STATUS_UPDATE_ENDPOINT.replace(':candidateId', candidateId);
+        console.log('set url',url);
+        const params = {
+            status : candidateStatus
+        }
+        try {
+            const res = await axiosService(BASE_URL+url, params, 'POST');
+            console.log('status res',res.data);
+            let updatedStatus = res.data.is_active;
+            if (updatedStatus !== candidatePreviousStatus) {
+                setCandidateLoader(!candidateLoader);
+            }
+        } catch (e) {
+            console.log(e)
+        }
+
+        setRejectModalVisible(false);
     }
 
     const acceptModalFooter = (
@@ -117,7 +139,7 @@ function Dashboard () {
 
     const rejectModalFooter = (
         <div style={{ display: 'flex', justifyContent: 'center'}}>
-            <Button type='primary' danger size='large' >
+            <Button type='primary' danger size='large' onClick={handleCandidateReject}>
                 Reject
             </Button>
         </div>
@@ -191,7 +213,7 @@ function Dashboard () {
                                             <Select.Option value="reject">Reject</Select.Option>
                                         </Select>
                                     </div>
-                                    <Modal title="Approve Candidate" visible={acceptModalVisible} footer={acceptModalFooter} maskStyle={{ opacity: '0.3' }} onCancel={handleAcceptModalCancel}>
+                                    <Modal title="Approve Candidate" visible={acceptModalVisible} footer={acceptModalFooter} maskStyle={{ opacity: '0.3' }} onCancel={handleApproveModalCancel}>
                                     </Modal>
                                     <Modal title="Reject Candidate" visible={rejectModalVisible} footer={rejectModalFooter} onCancel={handleRejectModalCancel}>
                                     </Modal>
