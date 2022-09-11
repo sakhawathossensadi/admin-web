@@ -40,13 +40,11 @@ $list-grid-template: 250px 250px 250px .8fr 1fr 150px;
 }
 
 .candidate-list {
-    background-color: aquamarine;
     margin-top: 20px;
 
     &-header {
         display: grid;
         grid-template-columns: $list-grid-template;
-        // gap: 20px;
         padding-left: 35px;
         align-items: flex-start;
         margin-bottom: 20px;
@@ -62,7 +60,7 @@ $list-grid-template: 250px 250px 250px .8fr 1fr 150px;
         &-item {
             display: grid;
             grid-template-columns: $list-grid-template;
-            background: #dad8d6;
+            background: #F5F5F5;
             height: 70px;
             border-radius: 5px;
             padding-left: 18px;

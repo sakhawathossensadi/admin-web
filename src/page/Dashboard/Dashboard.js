@@ -2,9 +2,37 @@ import React from "react";
 import { Avatar, Button, Modal, Select } from "antd";
 import { UserOutlined } from '@ant-design/icons'
 import './style.scss'
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { axiosService } from "../../axios/axiosService";
+import { BASE_URL } from "../../service";
+import { SERVER_TALENT_ADMIN_CANDIDATES_ENDPOINT } from '../../config/endpoints';
 
 function Dashboard () {
+
+    const navigate = useNavigate();
+
+    const params = {};
+
+    useEffect(() => {
+        if(!localStorage.getItem('access_token')) {
+            navigate('/');
+           }
+    })
+
+    useEffect(() => {
+        fetchCandidates();
+    })
+
+    const fetchCandidates = async () => {
+        console.log("object", );
+        try {
+            const res = await axiosService(BASE_URL+SERVER_TALENT_ADMIN_CANDIDATES_ENDPOINT, params, 'GET');
+            console.log('candidates',res);
+        } catch (e) {
+            console.log(e);
+        }
+    }
 
     const signOut = () => {}
 
