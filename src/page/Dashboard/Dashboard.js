@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Avatar, Button, Modal, Select } from "antd";
 import { UserOutlined } from '@ant-design/icons'
 import './style.scss'
@@ -12,6 +12,9 @@ function Dashboard () {
 
     const navigate = useNavigate();
 
+    const [candidates, setCandidates] = useState([]);
+    const [page, setPage] = useState(1);
+
     const params = {};
 
     useEffect(() => {
@@ -22,13 +25,13 @@ function Dashboard () {
 
     useEffect(() => {
         fetchCandidates();
-    })
+    },[]);
 
     const fetchCandidates = async () => {
-        console.log("object", );
         try {
             const res = await axiosService(BASE_URL+SERVER_TALENT_ADMIN_CANDIDATES_ENDPOINT, params, 'GET');
-            console.log('candidates',res);
+            // console.log('candidates',res.data);
+            setCandidates(res.data);
         } catch (e) {
             console.log(e);
         }
@@ -71,41 +74,47 @@ function Dashboard () {
                     <div className="candidate-list-header-item">Action</div>
                 </div>
                 <div className="candidate-list-body">
-                    <div className="candidate-list-body-item">
-                        <div className="candidate-list-body-item-username">
-                            <span className="candidate-list-body-item-username-span">
-                                {"New User"}
-                            </span>
-                        </div>
-                        <div className="candidate-list-body-item-email">
-                            <span>
-                                {"user.email"}
-                            </span>
-                        </div>
-                        <div className="candidate-list-body-item-cv">
-                            <Button className="users-list-body-item-btn candidate-list-body-item-cv-button" type="primary">
-                                View CV
-                            </Button>
-                        </div>
-                        <div className="candidate-list-body-item-details">
-                            <Button className="users-list-body-item-btn candidate-list-body-item-details-button" type="primary">
-                                View Details
-                            </Button>
-                        </div>
-                        <div className="candidate-list-body-item-status">
-                            <Select  className="candidate-list-select-action" defaultValue={"Status"} bordered={false}>
-                                <Select.Option value="approve">Approve</Select.Option>
-                                <Select.Option value="reject">Reject</Select.Option>
-                            </Select>
-                        </div>
-                        <div className="candidate-list-body-item-button">
-                            <Button  className="action-btn">
-                                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M5.73438 1.95312H5.5625C5.65703 1.95312 5.73438 1.87578 5.73438 1.78125V1.95312H12.2656V1.78125C12.2656 1.87578 12.343 1.95312 12.4375 1.95312H12.2656V3.5H13.8125V1.78125C13.8125 1.02285 13.1959 0.40625 12.4375 0.40625H5.5625C4.8041 0.40625 4.1875 1.02285 4.1875 1.78125V3.5H5.73438V1.95312ZM16.5625 3.5H1.4375C1.05723 3.5 0.75 3.80723 0.75 4.1875V4.875C0.75 4.96953 0.827344 5.04688 0.921875 5.04688H2.21953L2.7502 16.2832C2.78457 17.0158 3.39043 17.5938 4.12305 17.5938H13.877C14.6117 17.5938 15.2154 17.018 15.2498 16.2832L15.7805 5.04688H17.0781C17.1727 5.04688 17.25 4.96953 17.25 4.875V4.1875C17.25 3.80723 16.9428 3.5 16.5625 3.5ZM13.7115 16.0469H4.28848L3.76855 5.04688H14.2314L13.7115 16.0469Z" fill="#FC3273" />
-                                </svg>
-                            </Button>
-                        </div>
-                    </div>
+                    {
+                        candidates.map((candidate, index) => {
+                            return (
+                                <div className="candidate-list-body-item">
+                                    <div className="candidate-list-body-item-username">
+                                        <span className="candidate-list-body-item-username-span">
+                                            {"New User"}
+                                        </span>
+                                    </div>
+                                    <div className="candidate-list-body-item-email">
+                                        <span>
+                                            {"user.email"}
+                                        </span>
+                                    </div>
+                                    <div className="candidate-list-body-item-cv">
+                                        <Button className="users-list-body-item-btn candidate-list-body-item-cv-button" type="primary">
+                                            View CV
+                                        </Button>
+                                    </div>
+                                    <div className="candidate-list-body-item-details">
+                                        <Button className="users-list-body-item-btn candidate-list-body-item-details-button" type="primary">
+                                            View Details
+                                        </Button>
+                                    </div>
+                                    <div className="candidate-list-body-item-status">
+                                        <Select  className="candidate-list-select-action" defaultValue={"Status"} bordered={false}>
+                                            <Select.Option value="approve">Approve</Select.Option>
+                                            <Select.Option value="reject">Reject</Select.Option>
+                                        </Select>
+                                    </div>
+                                    <div className="candidate-list-body-item-button">
+                                        <Button  className="action-btn">
+                                            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M5.73438 1.95312H5.5625C5.65703 1.95312 5.73438 1.87578 5.73438 1.78125V1.95312H12.2656V1.78125C12.2656 1.87578 12.343 1.95312 12.4375 1.95312H12.2656V3.5H13.8125V1.78125C13.8125 1.02285 13.1959 0.40625 12.4375 0.40625H5.5625C4.8041 0.40625 4.1875 1.02285 4.1875 1.78125V3.5H5.73438V1.95312ZM16.5625 3.5H1.4375C1.05723 3.5 0.75 3.80723 0.75 4.1875V4.875C0.75 4.96953 0.827344 5.04688 0.921875 5.04688H2.21953L2.7502 16.2832C2.78457 17.0158 3.39043 17.5938 4.12305 17.5938H13.877C14.6117 17.5938 15.2154 17.018 15.2498 16.2832L15.7805 5.04688H17.0781C17.1727 5.04688 17.25 4.96953 17.25 4.875V4.1875C17.25 3.80723 16.9428 3.5 16.5625 3.5ZM13.7115 16.0469H4.28848L3.76855 5.04688H14.2314L13.7115 16.0469Z" fill="#FC3273" />
+                                            </svg>
+                                        </Button>
+                                    </div>
+                                </div>
+                            )
+                        })
+                    }
                 </div>               
             </div>
         </div>
