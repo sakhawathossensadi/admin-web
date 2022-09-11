@@ -9,7 +9,8 @@ import { BASE_URL } from "../../service";
 import { 
     SERVER_TALENT_ADMIN_CANDIDATES_ENDPOINT, 
     SERVER_TALENT_ADMIN_CANDIDATE_STATUS_UPDATE_ENDPOINT, 
-    SERVER_TALENT_ADMIN_PROFILE_ENDPOINT } from '../../config/endpoints';
+    SERVER_TALENT_ADMIN_PROFILE_ENDPOINT,
+    SERVER_TALENT_ADMIN_LOGOUT_ENDPOINT } from '../../config/endpoints';
 import styles from '../Dashboard/Contents.module.scss';
 
 function Dashboard () {
@@ -73,9 +74,17 @@ function Dashboard () {
         setPage(page);
     }
 
-    const signOut = () => {
-        localStorage.removeItem("access_token");
-        navigate('/');
+    const signOut = async () => {
+        try {
+            const res = await axiosService(BASE_URL+SERVER_TALENT_ADMIN_LOGOUT_ENDPOINT, dummy, 'POST');
+            console.log('logout', res);
+            if (res) {
+                localStorage.removeItem("access_token");
+                navigate('/');
+            }
+        } catch (e) {
+            console.log(e);
+        }
     }
 
     const handleStatus = (candidateId, status) => {
