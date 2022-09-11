@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Avatar, Button, Modal, Select } from "antd";
+import { Avatar, Button, Modal, Pagination, Select } from "antd";
 import { UserOutlined } from '@ant-design/icons'
 import './style.scss'
 import { useNavigate } from "react-router-dom";
@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import { axiosService } from "../../axios/axiosService";
 import { BASE_URL } from "../../service";
 import { SERVER_TALENT_ADMIN_CANDIDATES_ENDPOINT } from '../../config/endpoints';
+import styles from '../Dashboard/Contents.module.scss';
 
 function Dashboard () {
 
@@ -14,8 +15,11 @@ function Dashboard () {
 
     const [candidates, setCandidates] = useState([]);
     const [page, setPage] = useState(1);
+    const [total, setTotal] = useState(0);
 
-    const params = {};
+    const params = {
+        page: page
+    };
 
     useEffect(() => {
         if(!localStorage.getItem('access_token')) {
@@ -25,16 +29,22 @@ function Dashboard () {
 
     useEffect(() => {
         fetchCandidates();
-    },[]);
+    },[page]);
 
     const fetchCandidates = async () => {
         try {
             const res = await axiosService(BASE_URL+SERVER_TALENT_ADMIN_CANDIDATES_ENDPOINT, params, 'GET');
-            // console.log('candidates',res.data);
+            // console.log('candidates',res.meta.total);
             setCandidates(res.data);
+            setTotal(res.meta.total);
         } catch (e) {
             console.log(e);
         }
+    }
+
+    const onPageChange = (page) => {
+        console.log("page",page);
+        setPage(page);
     }
 
     const signOut = () => {}
@@ -116,6 +126,12 @@ function Dashboard () {
                         })
                     }
                 </div>               
+            </div>
+            <div className={styles.PaginationContainer}>
+                <Pagination size="small" total={total}
+                    defaultPageSize={15}
+                    current={page}
+                    onChange={onPageChange} />
             </div>
         </div>
     )
