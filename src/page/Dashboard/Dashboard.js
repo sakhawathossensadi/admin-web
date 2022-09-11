@@ -17,6 +17,8 @@ function Dashboard () {
     const [page, setPage] = useState(1);
     const [total, setTotal] = useState(0);
     const [fromNumber, setFromNumber] = useState(0);
+    const [acceptModalVisible, setAcceptModalVisible] = useState(false);
+    const [rejectModalVisible, setRejectModalVisible] = useState(false);
 
     const params = {
         page: page
