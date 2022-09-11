@@ -8,15 +8,9 @@ export const axiosService = async (url, data, reqType)=> {
     console.log('data', data);
 
     // const datad = data;
+    console.log('update url',url);
 
     const AuthToken = localStorage.getItem('access_token');
-    // console.log('token',AuthToken);
-
-    let page = data.page;
-
-    if(data.page){
-        url = url+'?page='+page;
-    }
 
     if(reqType === 'GET') {
       const res = await axios.get(url,{
@@ -40,7 +34,7 @@ export const axiosService = async (url, data, reqType)=> {
                 Accept: 'application/json'
             }
         })
-        
+
         return res;
     }
 }
