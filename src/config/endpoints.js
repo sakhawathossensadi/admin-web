@@ -1,0 +1,1 @@
+export const SERVER_TALENT_ADMIN_CANDIDATES_ENDPOINT = '/admin/candidates';
