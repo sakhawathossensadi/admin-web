@@ -94,12 +94,12 @@ function Dashboard () {
                                             {fromNumber + index+". "}
                                         </span>
                                         <span className="candidate-list-body-item-username-span">
-                                            {"New User"}
+                                            {candidate.name}
                                         </span>
                                     </div>
                                     <div className="candidate-list-body-item-email">
                                         <span>
-                                            {"user.email"}
+                                            {candidate.email}
                                         </span>
                                     </div>
                                     <div className="candidate-list-body-item-cv">
@@ -113,7 +113,7 @@ function Dashboard () {
                                         </Button>
                                     </div>
                                     <div className="candidate-list-body-item-status">
-                                        <Select  className="candidate-list-select-action" defaultValue={"Status"} bordered={false}>
+                                        <Select  className="candidate-list-select-action" value={candidate.is_active === true ? "approve" : "reject"} style={{ width: 150 }} defaultValue={"Status"} bordered={true}>
                                             <Select.Option value="approve">Approve</Select.Option>
                                             <Select.Option value="reject">Reject</Select.Option>
                                         </Select>
