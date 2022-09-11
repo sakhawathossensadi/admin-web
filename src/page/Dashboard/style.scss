@@ -1,3 +1,5 @@
+$list-grid-template: 250px 250px 250px .8fr 1fr 150px;
+
 .dashboard-topbar {
     height: 100px;
     background-color: azure;
@@ -34,5 +36,69 @@
         }
 
 
+    }
+}
+
+.candidate-list {
+    background-color: aquamarine;
+    margin-top: 20px;
+
+    &-header {
+        display: grid;
+        grid-template-columns: $list-grid-template;
+        // gap: 20px;
+        padding-left: 35px;
+        align-items: flex-start;
+        margin-bottom: 20px;
+    }
+
+    &-body {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding-left: 20px;
+        padding-right: 20px;
+
+        &-item {
+            display: grid;
+            grid-template-columns: $list-grid-template;
+            background: #dad8d6;
+            height: 70px;
+            border-radius: 5px;
+            padding-left: 18px;
+            padding-right: 18px;
+            align-items: center;
+            text-align: center;
+
+            &-btn {
+                padding: 5px 20px;
+                border-radius: 20px;
+                height: auto;
+            }
+
+            &-email {
+                text-align: start;
+            }
+
+            &-cv {
+                &-button {
+                    float: left;
+                }
+            }
+
+            &-details {
+                &-button {
+                    float: left;
+                }
+            }
+
+            &-username {
+                text-align: left;
+            }
+        }
+    }
+
+    &-select-action {
+        float: left;
     }
 }
