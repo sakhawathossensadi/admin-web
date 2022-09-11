@@ -5,16 +5,25 @@ const client_secret = 'dfAuvgguMDS7U7MovyArA7QXyL97U7dG2UzEW9NH';
 const scope = '*';
 
 export const axiosService = async (url, data, reqType)=> {
-    console.log('data', data);
+    // console.log('data', data);
 
-    const $userdata = {};
+    // const $userdata = {};
 
-    const AuthToken = localStorage.getItem('authToken')
-    console.log('url', url)
+    const AuthToken = localStorage.getItem('access_token');
+    // console.log('token',AuthToken);
+    // console.log('url', url)
 
-    if(reqType == 'GET') {
-      const data = await axios.get(url);
-        return  data;
+    if(reqType === 'GET') {
+        console.log("inside");
+      const res = await axios.get(url,{
+        ...data,
+        headers : {
+            Authorization: 'Bearer ' + AuthToken,
+            Accept: 'application/json'
+        }
+      });
+
+     return  res.data;
     } else if(reqType == 'POST') {
         const res = await axios.post(url, {
             ...data,
