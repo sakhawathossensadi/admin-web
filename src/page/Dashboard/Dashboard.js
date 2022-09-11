@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { axiosService } from "../../axios/axiosService";
 import { BASE_URL } from "../../service";
-import { SERVER_TALENT_ADMIN_CANDIDATES_ENDPOINT } from '../../config/endpoints';
+import { SERVER_TALENT_ADMIN_CANDIDATES_ENDPOINT, SERVER_TALENT_ADMIN_CANDIDATE_STATUS_UPDATE_ENDPOINT } from '../../config/endpoints';
 import styles from '../Dashboard/Contents.module.scss';
 
 function Dashboard () {
@@ -17,9 +17,12 @@ function Dashboard () {
     const [page, setPage] = useState(1);
     const [total, setTotal] = useState(0);
     const [fromNumber, setFromNumber] = useState(0);
+    const [candidatePreviousStatus, setCandidatePreviousStatus] = useState(0);
     const [candidateStatus, setCandidateStatus] = useState(0);
+    const [candidateId, setCandidateId] = useState(0);
     const [acceptModalVisible, setAcceptModalVisible] = useState(false);
     const [rejectModalVisible, setRejectModalVisible] = useState(false);
+    const [candidateLoader, setCandidateLoader] = useState(false);
 
     const params = {
         page: page
@@ -33,12 +36,13 @@ function Dashboard () {
 
     useEffect(() => {
         fetchCandidates();
-    },[page]);
+    },[page, candidateLoader]);
 
     const fetchCandidates = async () => {
+        let url = SERVER_TALENT_ADMIN_CANDIDATES_ENDPOINT+'?page='+page;
         try {
-            const res = await axiosService(BASE_URL+SERVER_TALENT_ADMIN_CANDIDATES_ENDPOINT, params, 'GET');
-            console.log('candidates',res);
+            const res = await axiosService(BASE_URL+url, params, 'GET');
+            // console.log('candidates',res);
             setCandidates(res.data);
             setTotal(res.meta.total);
             setFromNumber(res.meta.from);
@@ -54,8 +58,10 @@ function Dashboard () {
     const signOut = () => {}
 
     const handleStatus = (candidateId, status) => {
-        console.log('candidateId',candidateId);
-        console.log('status',status);
+        // console.log('candidateId',candidateId);
+        // console.log('status',status);
+        setCandidatePreviousStatus(status);
+        setCandidateId(candidateId);
 
         if (status === "approve") {
             showAcceptModal();
@@ -83,6 +89,24 @@ function Dashboard () {
         setRejectModalVisible(false);
     }
 
+    const handleCandidateApprove = async () => {
+        let url = SERVER_TALENT_ADMIN_CANDIDATE_STATUS_UPDATE_ENDPOINT.replace(':candidateId', candidateId);
+        console.log('set url',url);
+        const params = {
+            status : candidateStatus
+        }
+        try {
+            const res = await axiosService(BASE_URL+url, params, 'POST');
+            console.log('status res',res.data);
+            let updatedStatus = res.data.is_active;
+            if (updatedStatus !== candidatePreviousStatus) {
+                setCandidateLoader(!candidateLoader);
+            }
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
     const acceptModalFooter = (
         <div style={{ display: 'flex', justifyContent: 'center'}}>
             <Button type='primary' size='large' onClick={handleCandidateApprove}>
@@ -93,7 +117,7 @@ function Dashboard () {
 
     const rejectModalFooter = (
         <div style={{ display: 'flex', justifyContent: 'center'}}>
-            <Button type='primary' danger size='large' onClick={handleCandidatereject}>
+            <Button type='primary' danger size='large' >
                 Reject
             </Button>
         </div>
