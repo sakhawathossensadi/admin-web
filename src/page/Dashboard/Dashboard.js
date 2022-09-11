@@ -16,6 +16,7 @@ function Dashboard () {
     const [candidates, setCandidates] = useState([]);
     const [page, setPage] = useState(1);
     const [total, setTotal] = useState(0);
+    const [fromNumber, setFromNumber] = useState(0);
 
     const params = {
         page: page
@@ -34,16 +35,16 @@ function Dashboard () {
     const fetchCandidates = async () => {
         try {
             const res = await axiosService(BASE_URL+SERVER_TALENT_ADMIN_CANDIDATES_ENDPOINT, params, 'GET');
-            // console.log('candidates',res.meta.total);
+            console.log('candidates',res);
             setCandidates(res.data);
             setTotal(res.meta.total);
+            setFromNumber(res.meta.from);
         } catch (e) {
             console.log(e);
         }
     }
 
     const onPageChange = (page) => {
-        console.log("page",page);
         setPage(page);
     }
 
@@ -89,6 +90,9 @@ function Dashboard () {
                             return (
                                 <div className="candidate-list-body-item">
                                     <div className="candidate-list-body-item-username">
+                                        <span className="videos-list-item-name-serial">
+                                            {fromNumber + index+". "}
+                                        </span>
                                         <span className="candidate-list-body-item-username-span">
                                             {"New User"}
                                         </span>
