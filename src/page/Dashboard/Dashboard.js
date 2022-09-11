@@ -50,6 +50,27 @@ function Dashboard () {
 
     const signOut = () => {}
 
+    const handleStatus = (candidateId, status) => {
+        console.log('candidateId',candidateId);
+        console.log('status',status);
+    }
+
+    const acceptModalFooter = (
+        <div style={{ display: 'flex', justifyContent: 'center'}}>
+            <Button type='primary' size='large' onClick={handleVideoActive}>
+                Accept
+            </Button>
+        </div>
+    )
+
+    const rejectModalFooter = (
+        <div style={{ display: 'flex', justifyContent: 'center'}}>
+            <Button type='primary' danger size='large' onClick={handleVideoInactive}>
+                Pending
+            </Button>
+        </div>
+    )
+
     return (
         <div className="dashboard">
             <div className="dashboard-topbar">
@@ -113,11 +134,15 @@ function Dashboard () {
                                         </Button>
                                     </div>
                                     <div className="candidate-list-body-item-status">
-                                        <Select  className="candidate-list-select-action" value={candidate.is_active === true ? "approve" : "reject"} style={{ width: 150 }} defaultValue={"Status"} bordered={true}>
+                                        <Select onSelect={(status) => handleStatus(candidate.id, status)}  className="candidate-list-select-action" value={candidate.is_active === true ? "approve" : "reject"} style={{ width: 150 }} defaultValue={"Status"} bordered={true}>
                                             <Select.Option value="approve">Approve</Select.Option>
                                             <Select.Option value="reject">Reject</Select.Option>
                                         </Select>
                                     </div>
+                                    <Modal title="Approve Candidate" visible={acceptModalVisible} footer={acceptModalFooter} maskStyle={{ opacity: '0.3' }} onCancel={handleAcceptModalCancel}>
+                                    </Modal>
+                                    <Modal title="Reject Candidate" visible={pendingModalVisible} footer={rejectModalFooter} onCancel={handlePendingModalCancel}>
+                                    </Modal>
                                     <div className="candidate-list-body-item-button">
                                         <Button  className="action-btn">
                                             <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
