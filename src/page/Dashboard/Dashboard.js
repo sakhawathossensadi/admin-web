@@ -61,7 +61,6 @@ function Dashboard () {
         let url = SERVER_TALENT_ADMIN_CANDIDATES_ENDPOINT+'?page='+page;
         try {
             const res = await axiosService(BASE_URL+url, params, 'GET');
-            // console.log('candidates',res);
             setCandidates(res.data);
             setTotal(res.meta.total);
             setFromNumber(res.meta.from);
@@ -74,11 +73,12 @@ function Dashboard () {
         setPage(page);
     }
 
-    const signOut = () => {}
+    const signOut = () => {
+        localStorage.removeItem("access_token");
+        navigate('/');
+    }
 
     const handleStatus = (candidateId, status) => {
-        // console.log('candidateId',candidateId);
-        // console.log('status',status);
         setCandidatePreviousStatus(status);
         setCandidateId(candidateId);
 
