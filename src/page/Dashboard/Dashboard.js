@@ -17,6 +17,7 @@ function Dashboard () {
     const [page, setPage] = useState(1);
     const [total, setTotal] = useState(0);
     const [fromNumber, setFromNumber] = useState(0);
+    const [candidateStatus, setCandidateStatus] = useState(0);
     const [acceptModalVisible, setAcceptModalVisible] = useState(false);
     const [rejectModalVisible, setRejectModalVisible] = useState(false);
 
@@ -55,13 +56,22 @@ function Dashboard () {
     const handleStatus = (candidateId, status) => {
         console.log('candidateId',candidateId);
         console.log('status',status);
+
+        if (status === "approve") {
+            showAcceptModal();
+            setCandidateStatus(1);
+        }
+        if (status === "reject") {
+            showRejectModal();
+            setCandidateStatus(1);
+        }
     }
 
     const showAcceptModal = () => {
         setAcceptModalVisible(true);
     }
 
-    const showPendingModal = () => {
+    const showRejectModal = () => {
         setRejectModalVisible(true);
     }
 
@@ -75,16 +85,16 @@ function Dashboard () {
 
     const acceptModalFooter = (
         <div style={{ display: 'flex', justifyContent: 'center'}}>
-            <Button type='primary' size='large' onClick={handleVideoActive}>
-                Accept
+            <Button type='primary' size='large' onClick={handleCandidateApprove}>
+                Approve
             </Button>
         </div>
     )
 
     const rejectModalFooter = (
         <div style={{ display: 'flex', justifyContent: 'center'}}>
-            <Button type='primary' danger size='large' onClick={handleVideoInactive}>
-                Pending
+            <Button type='primary' danger size='large' onClick={handleCandidatereject}>
+                Reject
             </Button>
         </div>
     )
